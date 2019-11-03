@@ -1,0 +1,103 @@
+// Entity dimensions for collisions
+					double rWidth = Double.parseDouble(data.getOrDefault("width", "1")) / 2;
+					double rHeight = Double.parseDouble(data.getOrDefault("height", "1")) / 2;
+					double tolerance = 0.01;
+					long xMinCol = Math.round(x - rWidth + tolerance), xMaxCol = Math.round(x + rWidth - tolerance);
+					long yMinCol = Math.round(y - rHeight + tolerance), yMaxCol = Math.round(y + rHeight - tolerance);
+					// Y border calculations
+					int topBound = world.getHeight();
+					if (yMinCol < 0) {
+						// Bottom boundary
+						y = rHeight - 0.5;
+						yMinCol = Math.round(y - rHeight + tolerance);
+						yMaxCol = Math.round(y + rHeight - tolerance);
+						if (yVel < 0)
+							yVel = 0;
+					} else if (yMaxCol >= topBound) {
+						// Top boundary
+						y = topBound - 0.5 - rHeight;
+						yMinCol = Math.round(y - rHeight + tolerance);
+						yMaxCol = Math.round(y + rHeight - tolerance);
+						if (yVel > 0)
+							yVel = 0;
+					}
+					// Y collision calculations
+					if (yVel > 0 || gravity < 0) {
+						// Moving up
+						for (long i = xMinCol; i <= xMaxCol; i++) {
+							TileObject tile = world.getTile((int) i, (int) yMaxCol, 1);
+							if (tile.getID().equals("air")) {
+								yVel -= 2 * (gravity * (increase / 1.0e9));
+							} else if (yVel > 0) {
+								y = yMaxCol - (0.5 + rHeight);
+								yMinCol = Math.round(y - rHeight + tolerance);
+								yMaxCol = Math.round(y + rHeight - tolerance);
+								yVel = 0;
+							}
+						}
+					} else if (yVel < 0 || gravity > 0) {
+						// Moving down
+						for (long i = xMinCol; i <= xMaxCol; i++) {
+							TileObject tile = world.getTile((int) i, (int) yMinCol, 1);
+							if (tile.getID().equals("air")) {
+								yVel -= 2 * (gravity * (increase / 1.0e9));
+							} else if (yVel < 0) {
+								y = yMinCol + (0.5 + rHeight);
+								yMinCol = Math.round(y - rHeight + tolerance);
+								yMaxCol = Math.round(y + rHeight - tolerance);
+								yVel = 0;
+							}
+						}
+					} else {
+						// Stationary
+					}
+					// Gravity value check
+					if (gravity > 0) {
+						if (yVel < -10 * gravity)
+							yVel = -10 * gravity;
+					} else if (gravity < 0) {
+						if (yVel > -10 * gravity)
+							yVel = -10 * gravity;
+					}
+					// Y velocity calculation
+					y += 2 * (yVel * (increase / 1.0e9));
+					// X calculations
+					//xVel -= (0.95 * xVel) * (increase / 1.0e9);
+					if (Math.abs(xVel) < 0.001)
+						xVel = 0;
+					// X collision calculations
+					if (xVel > 0) {
+						// Moving right
+						for (long i = yMinCol; i <= yMaxCol; i++) {
+							TileObject tile = world.getTile((int) xMaxCol, (int) i, 1);
+							if (tile.getID().equals("air")) {
+
+							} else {
+								x = xMaxCol - (0.5 + rWidth);
+								xMinCol = Math.round(x - rWidth + tolerance);
+								xMaxCol = Math.round(x + rWidth - tolerance);
+								xVel = 0;
+							}
+						}
+					} else if (xVel < 0) {
+						// Moving left
+						for (long i = yMinCol; i <= yMaxCol; i++) {
+							TileObject tile = world.getTile((int) xMinCol, (int) i, 1);
+							if (tile.getID().equals("air")) {
+
+							} else {
+								x = xMinCol + (0.5 + rWidth);
+								xMinCol = Math.round(x - rWidth + tolerance);
+								xMaxCol = Math.round(x + rWidth - tolerance);
+								xVel = 0;
+							}
+						}
+					}
+					// X velocity calculation
+					x += 2 * (xVel * (increase / 1.0e9));
+					// Save new values
+					data.put("x", Double.toString(x));
+					data.put("y", Double.toString(y));
+					data.put("xVel", Double.toString(xVel));
+					data.put("yVel", Double.toString(yVel));
+					entity.dataReceived(null, "physics", new Gson().toJson(data));

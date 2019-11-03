@@ -1,3 +1,9 @@
+/.settings/
+bin/
+data/
+.classpath
+.project
+
 # Compiled class file
 *.class
 
