@@ -3,7 +3,7 @@ package modules.pixadv.layouts.menus;
 import java.util.HashMap;
 
 import modules.pixadv.layouts.components.inventory.InventoryGrid;
-import pixadv.graphics.swing.components.layouts.MenuLayout;
+import pixadv.graphics.layouts.MenuLayout;
 
 public class InGameMenu extends MenuLayout {
 	
