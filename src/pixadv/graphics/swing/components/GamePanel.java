@@ -23,7 +23,7 @@ import javax.swing.Timer;
 import com.google.gson.Gson;
 
 import lib.io.user.KeyCombo;
-import modules.pixadv.layouts.menus.InGameMenu;
+import modules.pixadv.layouts.menus.StartMenu;
 import modules.pixadv.objects.tiles.Air;
 import modules.pixadv.objects.tiles.terra.Dirt;
 import pixadv.graphics.layouts.MenuLayout;
@@ -52,7 +52,7 @@ public class GamePanel extends JPanel {
 	private double cameraXOld, cameraYOld;
 	
 	private Rectangle lastBounds = new Rectangle();
-	private MenuLayout currentLayout = new InGameMenu();
+	private MenuLayout currentLayout = new StartMenu();
 	
 	public boolean menu = true;
 	
@@ -115,7 +115,7 @@ public class GamePanel extends JPanel {
 				mouseLocation = mouseClickOrigin;
 				boolean result = currentLayout.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 				// Process click as block interaction instead
-				if (result) {
+				if (!result) {
 					try {
 						World world = loadedUniverse.currentWorld();
 						cameraXOld = world.getCameraX();
@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
 				mouseLocation = arg0.getPoint();
 				boolean result = currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 				// Process drag as camera
-				if (result) {
+				if (!result) {
 					try {
 						World world = loadedUniverse.currentWorld();
 						Picasso picasso = loadedUniverse.getRender();
