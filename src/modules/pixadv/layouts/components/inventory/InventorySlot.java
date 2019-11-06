@@ -5,9 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import lib.io.user.KeyCombo;
 import pixadv.graphics.layouts.components.LayoutComponent;
 import pixadv.registry.Registry;
 
@@ -54,7 +54,7 @@ public class InventorySlot extends LayoutComponent {
 	
 	// Interaction methods
 	@Override
-	public String processClick(Rectangle gBounds, Point p, int button, ArrayList<Character> modifierKeys, HashMap<String, Double> variables) {
+	public String processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			parent.setSelected(String.format("%s_%s", gx, gy));
 			return "good";
@@ -64,7 +64,7 @@ public class InventorySlot extends LayoutComponent {
 	}
 	
 	@Override
-	public String processHover(Rectangle gBounds, Point p, ArrayList<Character> modifierKeys, HashMap<String, Double> variables) {
+	public String processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		return "good";
 	}
 

@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import lib.io.user.KeyCombo;
 import pixadv.graphics.layouts.components.LayoutComponent;
 import pixadv.registry.Registry;
 
@@ -30,14 +31,14 @@ public class MenuLayout {
 	}
 	
 	// Interaction methods
-	public String processClick(Rectangle gBounds, Point p, int button, ArrayList<Character> modifierKeys) {
+	public String processClick(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
 		for (LayoutComponent child : children) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (LayoutComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processClick(gBounds, p, button, modifierKeys, selfBounds);
+				String result = child.processClick(gBounds, p, keys, selfBounds);
 				if (!result.isEmpty())
 					return result;
 			}
@@ -45,14 +46,14 @@ public class MenuLayout {
 		return "";
 	}
 	
-	public String processHover(Rectangle gBounds, Point p, ArrayList<Character> modifierKeys) {
+	public String processHover(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
 		for (LayoutComponent child : children) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (LayoutComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processHover(gBounds, p, modifierKeys, selfBounds);
+				String result = child.processHover(gBounds, p, keys, selfBounds);
 				if (!result.isEmpty())
 					return result;
 			}

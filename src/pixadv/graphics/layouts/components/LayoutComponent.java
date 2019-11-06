@@ -3,10 +3,10 @@ package pixadv.graphics.layouts.components;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import lib.expr.ExpUtil;
+import lib.io.user.KeyCombo;
 import pixadv.registry.Registry;
 
 public class LayoutComponent {
@@ -38,14 +38,14 @@ public class LayoutComponent {
 	}
 	
 	// Interaction methods
-	public String processClick(Rectangle gBounds, Point p, int button, ArrayList<Character> modifierKeys, HashMap<String, Double> variables) {
+	public String processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
 		for (LayoutComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processClick(gBounds, p, button, modifierKeys, selfBounds);
+				String result = child.processClick(gBounds, p, keys, selfBounds);
 				if (!result.isEmpty())
 					return result;
 			}
@@ -53,14 +53,14 @@ public class LayoutComponent {
 		return "";
 	}
 	
-	public String processHover(Rectangle gBounds, Point p, ArrayList<Character> modifierKeys, HashMap<String, Double> variables) {
+	public String processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
 		for (LayoutComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processHover(gBounds, p, modifierKeys, selfBounds);
+				String result = child.processHover(gBounds, p, keys, selfBounds);
 				if (!result.isEmpty())
 					return result;
 			}

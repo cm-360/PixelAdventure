@@ -22,6 +22,7 @@ import javax.swing.Timer;
 
 import com.google.gson.Gson;
 
+import lib.io.user.KeyCombo;
 import modules.pixadv.layouts.menus.InGameMenu;
 import modules.pixadv.objects.tiles.Air;
 import modules.pixadv.objects.tiles.terra.Dirt;
@@ -47,7 +48,7 @@ public class GamePanel extends JPanel {
 	private Rectangle bounds;
 	private Point mouseLocation;
 	private Point mouseClickOrigin;
-	private ArrayList<Character> pressedKeys = new ArrayList<Character>();
+	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
 	private double cameraXOld, cameraYOld;
 	
 	private Rectangle lastBounds = new Rectangle();
@@ -66,13 +67,13 @@ public class GamePanel extends JPanel {
 					try {
 						EntityObject player = loadedUniverse.getPlayer();
 						HashMap<String, String> data = new Gson().fromJson(player.getData(), HashMap.class);
-						if (pressedKeys.contains('w'))
+						if (pressedKeys.contains(Character.getNumericValue('w')))
 							data.put("yVel", "15");
-						if (pressedKeys.contains('s'))
+						if (pressedKeys.contains(Character.getNumericValue('s')))
 							;
-						if (pressedKeys.contains('a'))
+						if (pressedKeys.contains(Character.getNumericValue('a')))
 							data.put("xVel", "-5");
-						if (pressedKeys.contains('d'))
+						if (pressedKeys.contains(Character.getNumericValue('d')))
 							data.put("xVel", "5");
 						//loadedUniverse.getPhysics().manualChange(player, new Gson().toJson(data));
 						player.dataReceived(null, "physics", new Gson().toJson(data));
@@ -112,7 +113,7 @@ public class GamePanel extends JPanel {
 			public void mousePressed(MouseEvent arg0) {
 				mouseClickOrigin = arg0.getPoint();
 				mouseLocation = mouseClickOrigin;
-				String result = currentLayout.processClick(lastBounds, mouseLocation, arg0.getButton(), pressedKeys);
+				String result = currentLayout.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 				// Process click as block interaction instead
 				if (result.isEmpty()) {
 					try {
@@ -137,12 +138,12 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
 				mouseLocation = arg0.getPoint();
-				currentLayout.processHover(lastBounds, mouseLocation, pressedKeys);
+				currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 			}
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 				mouseLocation = arg0.getPoint();
-				String result = currentLayout.processHover(lastBounds, mouseLocation, pressedKeys);
+				String result = currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 				// Process drag as camera
 				if (result.isEmpty()) {
 					try {
@@ -176,7 +177,7 @@ public class GamePanel extends JPanel {
 		addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				char key = arg0.getKeyChar();
+				int key = arg0.getKeyCode();
 				if (!pressedKeys.contains(key))
 					pressedKeys.add(key);
 			}
