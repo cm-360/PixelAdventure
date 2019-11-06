@@ -31,34 +31,30 @@ public class MenuLayout {
 	}
 	
 	// Interaction methods
-	public String processClick(Rectangle gBounds, Point p, KeyCombo keys) {
+	public boolean processClick(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
 		for (LayoutComponent child : children) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (LayoutComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processClick(gBounds, p, keys, selfBounds);
-				if (!result.isEmpty())
-					return result;
+				return child.processClick(gBounds, p, keys, selfBounds);
 			}
 		}
-		return "";
+		return false;
 	}
 	
-	public String processHover(Rectangle gBounds, Point p, KeyCombo keys) {
+	public boolean processHover(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
 		for (LayoutComponent child : children) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (LayoutComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processHover(gBounds, p, keys, selfBounds);
-				if (!result.isEmpty())
-					return result;
+				return child.processHover(gBounds, p, keys, selfBounds);
 			}
 		}
-		return "";
+		return false;
 	}
 	
 	public String processKey() {

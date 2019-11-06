@@ -113,9 +113,9 @@ public class GamePanel extends JPanel {
 			public void mousePressed(MouseEvent arg0) {
 				mouseClickOrigin = arg0.getPoint();
 				mouseLocation = mouseClickOrigin;
-				String result = currentLayout.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
+				boolean result = currentLayout.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 				// Process click as block interaction instead
-				if (result.isEmpty()) {
+				if (result) {
 					try {
 						World world = loadedUniverse.currentWorld();
 						cameraXOld = world.getCameraX();
@@ -143,9 +143,9 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 				mouseLocation = arg0.getPoint();
-				String result = currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
+				boolean result = currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 				// Process drag as camera
-				if (result.isEmpty()) {
+				if (result) {
 					try {
 						World world = loadedUniverse.currentWorld();
 						Picasso picasso = loadedUniverse.getRender();

@@ -54,18 +54,18 @@ public class InventorySlot extends LayoutComponent {
 	
 	// Interaction methods
 	@Override
-	public String processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public boolean processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			parent.setSelected(String.format("%s_%s", gx, gy));
-			return "good";
+			return true;
 		} else {
-			return "";
+			return false;
 		}
 	}
 	
 	@Override
-	public String processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		return "good";
+	public boolean processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+		return true;
 	}
 
 }

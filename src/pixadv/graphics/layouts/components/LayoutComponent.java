@@ -38,34 +38,30 @@ public class LayoutComponent {
 	}
 	
 	// Interaction methods
-	public String processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public boolean processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
 		for (LayoutComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processClick(gBounds, p, keys, selfBounds);
-				if (!result.isEmpty())
-					return result;
+				return child.processClick(gBounds, p, keys, selfBounds);
 			}
 		}
-		return "";
+		return false;
 	}
 	
-	public String processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public boolean processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
 		for (LayoutComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
-				String result = child.processHover(gBounds, p, keys, selfBounds);
-				if (!result.isEmpty())
-					return result;
+				return child.processHover(gBounds, p, keys, selfBounds);
 			}
 		}
-		return "";
+		return false;
 	}
 	
 	public String processKey() {
