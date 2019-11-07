@@ -27,7 +27,7 @@ public class NetworkWorld extends World {
 		// TODO request entities
 		
 		// Return now loaded world
-		return null;
+		return world;
 	}
 
 }
