@@ -32,7 +32,9 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		children.add(new Button(boundExpressionsSingleplayer, eventsSingleplayer));
+		Button buttonSingleplayer = new Button(boundExpressionsSingleplayer, eventsSingleplayer);
+		buttonSingleplayer.setTexture("pixadv/gui/start-menu/singleplayer");
+		children.add(buttonSingleplayer);
 		// Multiplayer button
 		HashMap<String, String> boundExpressionsMultiplayer = new HashMap<String, String>();
 		boundExpressionsMultiplayer.put("x", "(pw / 2) - (120 * scale)");
@@ -49,7 +51,9 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		children.add(new Button(boundExpressionsMultiplayer, eventsMultiplayer));
+		Button buttonMultiplayer = new Button(boundExpressionsMultiplayer, eventsMultiplayer);
+		buttonMultiplayer.setTexture("pixadv/gui/start-menu/multiplayer");
+		children.add(buttonMultiplayer);
 		// Options button
 		HashMap<String, String> boundExpressionsOptions = new HashMap<String, String>();
 		boundExpressionsOptions.put("x", "(pw / 2) - (120 * scale)");
@@ -63,7 +67,9 @@ public class StartMenu extends MenuLayout {
 				// TODO options menu
 			}
 		});
-		children.add(new Button(boundExpressionsOptions, eventsOptions));
+		Button buttonOptions = new Button(boundExpressionsOptions, eventsOptions);
+		buttonOptions.setTexture("");
+		children.add(buttonOptions);
 		// Quit button
 		HashMap<String, String> boundExpressionsQuit = new HashMap<String, String>();
 		boundExpressionsQuit.put("x", "(pw / 2) + 4");
@@ -78,7 +84,9 @@ public class StartMenu extends MenuLayout {
 				System.exit(0);
 			}
 		});
-		children.add(new Button(boundExpressionsQuit, eventsQuit));
+		Button buttonQuit = new Button(boundExpressionsQuit, eventsQuit);
+		buttonQuit.setTexture("");
+		children.add(buttonQuit);
 	}
 
 }
