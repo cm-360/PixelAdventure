@@ -17,7 +17,7 @@ public class Air extends TileObject {
 	}
 	
 	// Info methods
-	public String getID() {
+	public static String getID() {
 		return "air";
 	}
 	

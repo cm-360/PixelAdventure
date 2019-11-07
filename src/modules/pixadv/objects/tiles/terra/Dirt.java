@@ -31,7 +31,7 @@ public class Dirt extends TileObject {
 	}
 	
 	// Info method
-	public String getID() {
+	public static String getID() {
 		return "terra/dirt";
 	}
 	

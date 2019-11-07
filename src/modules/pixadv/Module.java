@@ -22,9 +22,9 @@ public class Module implements ModuleLoader {
 	@Override
 	public HashMap<String, Class<? extends TileObject>> loadTiles() {
 		HashMap<String, Class<? extends TileObject>> tiles = new HashMap<String, Class<? extends TileObject>>();
-		tiles.put(new Air(null, null).getID(), Air.class);
+		tiles.put(Air.getID(), Air.class);
 		// Add terrain tiles
-		tiles.put(new Dirt(null, null).getID(), Dirt.class);
+		tiles.put(Dirt.getID(), Dirt.class);
 		// Return the completed list
 		return tiles;
 	}
