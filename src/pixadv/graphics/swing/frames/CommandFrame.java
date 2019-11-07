@@ -12,6 +12,7 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import pixadv.graphics.layouts.MenuLayout;
 import pixadv.graphics.swing.components.GamePanel;
 import pixadv.world.storage.universe.Universe;
 
@@ -64,6 +65,9 @@ public class CommandFrame extends JFrame {
 							} else if (command.equals("redraw")) {
 								gamePanel.getLoadedUniverse().getRender().clearCache();
 								addHistory("  Chunk cache cleared.");
+							} else if (commandSplit[0].equals("scale")) {
+								MenuLayout.menuScale = Double.parseDouble(commandSplit[1]);
+								addHistory(String.format("  Set menu scale to %s", commandSplit[1]));
 							} else if (commandSplit[0].equals("toggle")) {
 								if (commandSplit[1].equals("debug")) {
 									// Toggle debug info drawing

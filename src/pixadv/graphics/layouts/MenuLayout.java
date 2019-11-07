@@ -12,7 +12,7 @@ import pixadv.registry.Registry;
 
 public class MenuLayout {
 
-	public final double MENU_SCALE = 2;
+	public static double menuScale = 2;
 	
 	protected ArrayList<LayoutComponent> children = new ArrayList<LayoutComponent>();
 	
@@ -68,7 +68,7 @@ public class MenuLayout {
 		variables.put("py", (double) gBounds.y);
 		variables.put("pw", (double) gBounds.width);
 		variables.put("ph", (double) gBounds.height);
-		variables.put("scale", MENU_SCALE);
+		variables.put("scale", menuScale);
 		return variables;
 	}
 
