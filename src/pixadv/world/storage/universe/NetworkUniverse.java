@@ -19,7 +19,8 @@ public class NetworkUniverse extends Universe {
 		super(registry);
 	}
 	
-	public static NetworkUniverse connect(String ip, String token) {
+	public static NetworkUniverse connect(Registry registry, String ip, String token) {
+		System.out.println("** Universe loading **");
 		System.out.printf("Connecting to universe at '%s'...\n", ip);
 		String response;
 		try {
@@ -34,14 +35,6 @@ public class NetworkUniverse extends Universe {
 			response = socketIn.readLine();
 			if (response.equals("allow")) {
 				System.out.println("Client authenticated!");
-				// Load the registry
-				System.out.println("** Registry Creation **");
-				long start = System.currentTimeMillis();
-				Registry registry = new Registry();
-				// TODO load external modules
-
-				System.out.printf("Registry loading completed in %d ms, loaded %d modules\n",
-						System.currentTimeMillis() - start, registry.listModules().size());
 				// Send local registry and wait for response
 				System.out.println("Sending local registry and awaiting server response...");
 				socketOut.println(registry.toString());
@@ -57,7 +50,6 @@ public class NetworkUniverse extends Universe {
 					// Create a client object to handle world loading
 					universe.client = new Client(socket, universe);
 					// Download the remote world
-					System.out.println("** World loading **");
 					response = socketIn.readLine();
 					String[] worldData = response.split(":", 3);
 					System.out.printf("  Name: '%s'\n", worldData[0]);

@@ -28,6 +28,7 @@ import modules.pixadv.objects.tiles.Air;
 import modules.pixadv.objects.tiles.terra.Dirt;
 import pixadv.graphics.layouts.MenuLayout;
 import pixadv.graphics.picasso.Picasso;
+import pixadv.registry.Registry;
 import pixadv.world.storage.universe.LocalUniverse;
 import pixadv.world.storage.universe.NetworkUniverse;
 import pixadv.world.storage.universe.Universe;
@@ -43,6 +44,7 @@ public class GamePanel extends JPanel {
 	private int frames = 0;
 	private HashMap<String, String> debugInfo = new HashMap<String, String>();
 	
+	private Registry registry;
 	private Universe loadedUniverse;
 	
 	private Rectangle bounds;
@@ -52,10 +54,12 @@ public class GamePanel extends JPanel {
 	private double cameraXOld, cameraYOld;
 	
 	private Rectangle lastBounds = new Rectangle();
-	private MenuLayout currentLayout = new StartMenu();
+	private MenuLayout currentMenu = new StartMenu(this);
 	
+	// For debugging
 	public boolean menu = true;
 	
+	// Constructor
 	public GamePanel() {
 		debugInfo.put("fps", "-1");
 		// User input thread
@@ -107,13 +111,19 @@ public class GamePanel extends JPanel {
 				repaint();
 			}
 		}).start();
+		// Load the registry
+		System.out.println("** Registry Creation **");
+		long start = System.currentTimeMillis();
+		registry = new Registry();
+		System.out.printf("Registry loading completed in %d ms, loaded %d modules\n",
+				System.currentTimeMillis() - start, registry.listModules().size());
 		// Mouse events
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				mouseClickOrigin = arg0.getPoint();
 				mouseLocation = mouseClickOrigin;
-				boolean result = currentLayout.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
+				boolean result = currentMenu.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 				// Process click as block interaction instead
 				if (!result) {
 					try {
@@ -138,12 +148,12 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
 				mouseLocation = arg0.getPoint();
-				currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
+				currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 			}
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 				mouseLocation = arg0.getPoint();
-				boolean result = currentLayout.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
+				boolean result = currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 				// Process drag as camera
 				if (!result) {
 					try {
@@ -192,16 +202,21 @@ public class GamePanel extends JPanel {
 		});
 	}
 	
-	public boolean loadUniverse(File universeDir) {
+	// Control methods
+	public boolean loadUniverse(Registry registry, File universeDir) {
 		// Load universe
-		loadedUniverse = LocalUniverse.load(universeDir);
+		loadedUniverse = LocalUniverse.load(registry, universeDir);
 		return loadedUniverse != null;
 	}
 	
-	public boolean loadUniverse(String ip, String token) {
+	public boolean loadUniverse(Registry registry, String ip, String token) {
 		// Download universe
-		loadedUniverse = NetworkUniverse.connect(ip, token);
+		loadedUniverse = NetworkUniverse.connect(registry, ip, token);
 		return loadedUniverse != null;
+	}
+	
+	public void setMenu(MenuLayout menu) {
+		currentMenu = menu;
 	}
 	
 	@Override
@@ -225,7 +240,7 @@ public class GamePanel extends JPanel {
 			loadedUniverse.getRender().paint(g, loadedUniverse.currentWorld(), mouseLocation, debugInfo);
 		// Paint current menu
 		if (menu)
-			currentLayout.paint(g, loadedUniverse.getRegistry());
+			currentMenu.paint(g, registry);
 		frames++;
 	}
 	
@@ -235,6 +250,10 @@ public class GamePanel extends JPanel {
 	}
 	
 	// Access methods
+	public Registry getRegistry() {
+		return registry;
+	}
+	
 	public Universe getLoadedUniverse() {
 		return loadedUniverse;
 	}

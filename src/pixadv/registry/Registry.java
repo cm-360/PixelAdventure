@@ -141,7 +141,7 @@ public class Registry {
 		try {
 			return TILES.get(id).getConstructor(Registry.class, String.class).newInstance(this, data);
 		} catch (Exception e) {
-			// TODO Could not use constructor
+			// Could not use constructor
 			e.printStackTrace();
 			return null;
 		}

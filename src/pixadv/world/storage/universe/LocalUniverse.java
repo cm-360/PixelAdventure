@@ -24,15 +24,11 @@ public class LocalUniverse extends Universe {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static LocalUniverse load(File universeDir) {
+	public static LocalUniverse load(Registry registry, File universeDir) {
+		System.out.println("** Universe loading **");
 		try {
 			File universeCanonDir = universeDir.getCanonicalFile();
 			System.out.printf("Loading universe '%s' from '%s'...\n", universeCanonDir.getName(), universeCanonDir);
-			// Load the registry
-			System.out.println("** Registry Creation **");
-			long start = System.currentTimeMillis();
-			Registry registry = new Registry();
-			// TODO load external modules
 			// Compare to old registry
 			System.out.println("Comparing internal registry to 'registry.json'...");
 			File registryFile = new File(universeCanonDir + "/registry.json");
@@ -56,10 +52,7 @@ public class LocalUniverse extends Universe {
 				System.out.printf("  Unable to locate '%s'!\n", registryFile);
 				return null;
 			}
-			System.out.printf("Registry loading completed in %d ms, loaded %d modules\n",
-					System.currentTimeMillis() - start, registry.listModules().size());
 			// Find all worlds in this universe
-			System.out.println("** World loading **");
 			LocalUniverse universe = new LocalUniverse(registry);
 			universe.universeDir = universeCanonDir;
 			ArrayList<File> worldDirs = FileUtil.listFiles(new File(universeCanonDir + "/worlds"), new FileFilter() {

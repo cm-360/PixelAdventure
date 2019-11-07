@@ -9,6 +9,7 @@ import java.net.Socket;
 import pixadv.graphics.swing.frames.ClientFrame;
 import pixadv.graphics.swing.frames.CommandFrame;
 import pixadv.network.Server;
+import pixadv.registry.Registry;
 import pixadv.world.storage.universe.LocalUniverse;
 
 public class PixelAdventure {
@@ -43,9 +44,15 @@ public class PixelAdventure {
 	
 	public static void server(File universeDir, int port) {
 		try {
+			// Load the registry
+			System.out.println("** Registry Creation **");
+			long start = System.currentTimeMillis();
+			Registry registry = new Registry();
+			System.out.printf("Registry loading completed in %d ms, loaded %d modules\n",
+					System.currentTimeMillis() - start, registry.listModules().size());
 			// Load the universe to use
 			File universeCanonDir = universeDir.getCanonicalFile();
-			LocalUniverse universe = LocalUniverse.load(universeCanonDir);
+			LocalUniverse universe = LocalUniverse.load(registry, universeCanonDir);
 			// Start hosting the game
 			ServerSocket serverSocket = new ServerSocket(port);
 			hosting = true;
