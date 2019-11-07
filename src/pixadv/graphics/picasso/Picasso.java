@@ -25,8 +25,8 @@ public class Picasso {
 	private final Registry REG;
 	
 	private int tileSize = 32;
-	private boolean debug = true;
-	private boolean optimized = true;
+	public boolean debug = true;
+	public boolean optimized = true;
 	
 	private String lastExceptionText = "";
 	private long lastExceptionTime = -1;
@@ -120,7 +120,6 @@ public class Picasso {
 								}
 								// Finalization
 								cg.dispose();
-								
 								chunkRenderCache.put(chunkName, chunkImage);
 								chunkUpdates.remove(chunkName);
 							}
@@ -129,7 +128,6 @@ public class Picasso {
 									centerX + (int) Math.round(tileSize * (cx * Chunk.getSize() - world.getCameraX())),
 									centerY - (int) Math.round(tileSize * ((cy + 1) * Chunk.getSize() - world.getCameraY() - 1)),
 									tileSize * Chunk.getSize(), tileSize * Chunk.getSize(), null);
-
 						}
 					}
 			}

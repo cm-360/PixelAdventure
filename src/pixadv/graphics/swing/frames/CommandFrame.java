@@ -64,9 +64,24 @@ public class CommandFrame extends JFrame {
 							} else if (command.equals("redraw")) {
 								gamePanel.getLoadedUniverse().getRender().clearCache();
 								addHistory("  Chunk cache cleared.");
-							} else if (command.equals("menutoggle")) {
-								gamePanel.menu = !gamePanel.menu;
-								addHistory("  Menu toggled.");
+							} else if (commandSplit[0].equals("toggle")) {
+								if (commandSplit[1].equals("debug")) {
+									// Toggle debug info drawing
+									gamePanel.getLoadedUniverse().getRender().debug = !gamePanel.getLoadedUniverse().getRender().debug;
+									addHistory("  Toggled debug info.");
+								} else if (commandSplit[1].equals("menu")) {
+									// Toggle menu layer drawing 
+									gamePanel.menu = !gamePanel.menu;
+									addHistory("  Toggled menu.");
+								} else if (commandSplit[1].equals("optimized")) {
+									// Toggle tile drawing optimization
+									gamePanel.getLoadedUniverse().getRender().optimized = !gamePanel.getLoadedUniverse().getRender().optimized;
+									gamePanel.getLoadedUniverse().getRender().clearCache();
+									addHistory("  Toggled tile optimization.");
+								} else {
+									addHistory(String.format("  Unknown argument '%s'.", commandSplit[1]));
+									unknown = true;
+								}
 							} else {
 								addHistory("  Unknown command.");
 								unknown = true;
@@ -75,7 +90,11 @@ public class CommandFrame extends JFrame {
 							if (!unknown)
 								commandField.setText("");
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							// Add exception info to history
+							addHistory("  Exception caught while executing command!");
+							addHistory("  " + e.getClass().getName() + ": " + e.getMessage());
+							// Print stacktrace
+							System.out.printf("Exception caught while executing command '%s'!\n", command);
 							e.printStackTrace();
 						}
 					}
