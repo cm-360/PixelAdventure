@@ -23,7 +23,7 @@ public class TileObject implements EventObject {
 	}
 	
 	// Info methods
-	public static String getID() {
+	public String getID() {
 		return "unknown";
 	}
 	
