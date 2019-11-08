@@ -1,5 +1,6 @@
 package pixadv.graphics.layouts.components;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -12,11 +13,15 @@ import pixadv.registry.Registry;
 public class MenuComponent {
 	
 	protected HashMap<String, String> boundExpressions;
+	protected HashMap<KeyCombo, Runnable> interactEvents;
+	protected String currentTexture = "";
+	
 	protected HashMap<String, MenuComponent> children = new HashMap<String, MenuComponent>();
 	
 	// Constructor
-	public MenuComponent(HashMap<String, String> boundExpressions) {
+	public MenuComponent(HashMap<String, String> boundExpressions, HashMap<KeyCombo, Runnable> interactEvents) {
 		this.boundExpressions = boundExpressions;
+		this.interactEvents = interactEvents;
 	}
 	
 	// Paint method
@@ -27,6 +32,14 @@ public class MenuComponent {
 		variablesNew.put("py", selfBounds.get("y"));
 		variablesNew.put("pw", selfBounds.get("w"));
 		variablesNew.put("ph", selfBounds.get("h"));
+		// Paint self texture
+		Rectangle selfScreenBounds = makeScreenCoords(g.getClipBounds(), selfBounds);
+		if (!currentTexture.isEmpty()) {
+			g.drawImage(registry.getTexture(currentTexture), selfScreenBounds.x, selfScreenBounds.y, selfScreenBounds.width, selfScreenBounds.height, null);
+			// For debugging
+			g.setFont(new Font(null, 0, 12));
+			g.drawString(currentTexture, selfScreenBounds.x + 3, selfScreenBounds.y + 13);
+		}
 		// Paint children components
 		for (String cName : children.keySet()) {
 			children.get(cName).paint(g, registry, variables);
@@ -44,24 +57,50 @@ public class MenuComponent {
 		for (MenuComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
-			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
+			if (makeScreenCoords(gBounds, childBounds).contains(p))
 				return child.processClick(gBounds, p, keys, selfBounds);
-			}
 		}
-		return null;
+		// Check if event can be self-processed
+		if (interactEvents == null) {
+			return null;
+		} else {
+			boolean handled = false;
+			for (KeyCombo combo : interactEvents.keySet())
+				if (keys.containsAll(combo)) {
+					handled = true;
+					interactEvents.get(combo).run();
+				}
+			if (handled)
+				return this;
+			else
+				return null;
+		}
 	}
 	
 	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		// Check if mouse is on any children
-		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
-		for (MenuComponent child : children.values()) {
-			// Convert child bounds to on-screen coordinates and check for intersect
-			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
-			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
-				return child.processHover(gBounds, p, keys, selfBounds);
-			}
-		}
-		return null;
+		// Check if click is on any children
+				HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
+				for (MenuComponent child : children.values()) {
+					// Convert child bounds to on-screen coordinates and check for intersect
+					HashMap<String, Double> childBounds = child.getBounds(selfBounds);
+					if (makeScreenCoords(gBounds, childBounds).contains(p))
+						return child.processHover(gBounds, p, keys, selfBounds);
+				}
+				// Check if event can be self-processed
+				if (interactEvents == null) {
+					return null;
+				} else {
+					boolean handled = false;
+					for (KeyCombo combo : interactEvents.keySet())
+						if (keys.containsAll(combo)) {
+							handled = true;
+							interactEvents.get(combo).run();
+						}
+					if (handled)
+						return this;
+					else
+						return null;
+				}
 	}
 	
 	public String processKey() {
@@ -71,6 +110,10 @@ public class MenuComponent {
 	public void unfocusChildren() {
 		for (MenuComponent child : children.values())
 			child.unfocusChildren();
+	}
+	
+	public void setTexture(String textureID) {
+		currentTexture = textureID;
 	}
 	
 	// Utility methods

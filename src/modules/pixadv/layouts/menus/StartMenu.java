@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import lib.io.user.KeyCombo;
-import modules.pixadv.layouts.components.generic.MenuButton;
-import modules.pixadv.layouts.components.generic.MenuImage;
 import pixadv.graphics.layouts.MenuLayout;
+import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.graphics.swing.components.GamePanel;
 
 public class StartMenu extends MenuLayout {
@@ -23,7 +22,7 @@ public class StartMenu extends MenuLayout {
 		boundExpressionsLogo.put("y", "(ph / 2) + (20 * scale) + 100");
 		boundExpressionsLogo.put("w", "240 * scale");
 		boundExpressionsLogo.put("h", "32 * scale");
-		MenuImage imageLogo = new MenuImage(boundExpressionsLogo, null);
+		MenuComponent imageLogo = new MenuComponent(boundExpressionsLogo, null);
 		imageLogo.setTexture("pixadv/gui/start-menu/logo");
 		children.add(imageLogo);
 		// Singleplayer button
@@ -42,7 +41,7 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		MenuButton buttonSingleplayer = new MenuButton(boundExpressionsSingleplayer, eventsSingleplayer);
+		MenuComponent buttonSingleplayer = new MenuComponent(boundExpressionsSingleplayer, eventsSingleplayer);
 		buttonSingleplayer.setTexture("pixadv/gui/start-menu/singleplayer");
 		children.add(buttonSingleplayer);
 		// Multiplayer button
@@ -61,7 +60,7 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		MenuButton buttonMultiplayer = new MenuButton(boundExpressionsMultiplayer, eventsMultiplayer);
+		MenuComponent buttonMultiplayer = new MenuComponent(boundExpressionsMultiplayer, eventsMultiplayer);
 		buttonMultiplayer.setTexture("pixadv/gui/start-menu/multiplayer");
 		children.add(buttonMultiplayer);
 		// Options button
@@ -77,7 +76,7 @@ public class StartMenu extends MenuLayout {
 				// TODO options menu
 			}
 		});
-		MenuButton buttonOptions = new MenuButton(boundExpressionsOptions, eventsOptions);
+		MenuComponent buttonOptions = new MenuComponent(boundExpressionsOptions, eventsOptions);
 		buttonOptions.setTexture("pixadv/gui/start-menu/options");
 		children.add(buttonOptions);
 		// Quit button
@@ -94,7 +93,7 @@ public class StartMenu extends MenuLayout {
 				System.exit(0);
 			}
 		});
-		MenuButton buttonQuit = new MenuButton(boundExpressionsQuit, eventsQuit);
+		MenuComponent buttonQuit = new MenuComponent(boundExpressionsQuit, eventsQuit);
 		buttonQuit.setTexture("pixadv/gui/start-menu/quit");
 		children.add(buttonQuit);
 	}

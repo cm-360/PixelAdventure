@@ -14,7 +14,7 @@ public class InventoryGrid extends MenuComponent {
 	
 	// Constructor
 	public InventoryGrid(int width, int height, HashMap<String, String> boundExpressions) {
-		super(boundExpressions);
+		super(boundExpressions, null);
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++) {
 				children.put(String.format("%d_%d", x, y), new InventorySlot(this, x, y));
