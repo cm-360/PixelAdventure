@@ -9,13 +9,13 @@ import lib.expr.ExpUtil;
 import lib.io.user.KeyCombo;
 import pixadv.registry.Registry;
 
-public class LayoutComponent {
+public class MenuComponent {
 	
 	protected HashMap<String, String> boundExpressions;
-	protected HashMap<String, LayoutComponent> children = new HashMap<String, LayoutComponent>();
+	protected HashMap<String, MenuComponent> children = new HashMap<String, MenuComponent>();
 	
 	// Constructor
-	public LayoutComponent(HashMap<String, String> boundExpressions) {
+	public MenuComponent(HashMap<String, String> boundExpressions) {
 		this.boundExpressions = boundExpressions;
 	}
 	
@@ -38,10 +38,10 @@ public class LayoutComponent {
 	}
 	
 	// Interaction methods
-	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public MenuComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
-		for (LayoutComponent child : children.values()) {
+		for (MenuComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
@@ -51,10 +51,10 @@ public class LayoutComponent {
 		return null;
 	}
 	
-	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
-		for (LayoutComponent child : children.values()) {
+		for (MenuComponent child : children.values()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(p)) {
@@ -66,6 +66,11 @@ public class LayoutComponent {
 	
 	public String processKey() {
 		return "";
+	}
+	
+	public void unfocusChildren() {
+		for (MenuComponent child : children.values())
+			child.unfocusChildren();
 	}
 	
 	// Utility methods

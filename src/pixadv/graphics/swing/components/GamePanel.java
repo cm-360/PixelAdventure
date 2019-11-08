@@ -27,7 +27,7 @@ import modules.pixadv.layouts.menus.StartMenu;
 import modules.pixadv.objects.tiles.Air;
 import modules.pixadv.objects.tiles.terra.Dirt;
 import pixadv.graphics.layouts.MenuLayout;
-import pixadv.graphics.layouts.components.LayoutComponent;
+import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.graphics.picasso.Picasso;
 import pixadv.registry.Registry;
 import pixadv.world.storage.universe.LocalUniverse;
@@ -129,7 +129,7 @@ public class GamePanel extends JPanel {
 			public void mousePressed(MouseEvent arg0) {
 				mouseClickOrigin = arg0.getPoint();
 				mouseLocation = mouseClickOrigin;
-				LayoutComponent focused = currentMenu.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
+				MenuComponent focused = currentMenu.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 				// Process click as block interaction instead
 				if (focused != null) {
 					try {

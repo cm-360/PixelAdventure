@@ -8,10 +8,10 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 
 import lib.io.user.KeyCombo;
-import pixadv.graphics.layouts.components.LayoutComponent;
+import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.registry.Registry;
 
-public class InventorySlot extends LayoutComponent {
+public class InventorySlot extends MenuComponent {
 
 	// TODO Allow free placement of slots
 	
@@ -37,7 +37,7 @@ public class InventorySlot extends LayoutComponent {
 	
 	@Override
 	public void paint(Graphics g, Registry registry, HashMap<String, Double> variables) {
-		Rectangle r = LayoutComponent.makeScreenCoords(g.getClipBounds(), getBounds(variables));
+		Rectangle r = MenuComponent.makeScreenCoords(g.getClipBounds(), getBounds(variables));
 		g.drawImage(registry.getTexture("pixadv/gui/inventory/generic/tile"), r.x, r.y, r.width, r.height, null);
 		g.setColor(Color.BLACK);
 		g.setFont(new Font(null, 0, 10));
@@ -54,8 +54,8 @@ public class InventorySlot extends LayoutComponent {
 	
 	// Interaction methods
 	@Override
-	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
+	public MenuComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+		if (MenuComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			parent.setSelected(String.format("%s_%s", gx, gy));
 			return this;
 		} else {
@@ -64,7 +64,7 @@ public class InventorySlot extends LayoutComponent {
 	}
 	
 	@Override
-	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		return null;
 	}
 

@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.HashMap;
 
-import pixadv.graphics.layouts.components.LayoutComponent;
+import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.registry.Registry;
 
-public class InventoryGrid extends LayoutComponent {
+public class InventoryGrid extends MenuComponent {
 	
 	private String selected = "";
 	
@@ -37,10 +37,10 @@ public class InventoryGrid extends LayoutComponent {
 		variablesNew.put("ph", selfBounds.get("h"));
 		// Draw grid tiles
 		for (String name : children.keySet()) {
-			LayoutComponent slot = children.get(name);
+			MenuComponent slot = children.get(name);
 			slot.paint(g, registry, variablesNew);
 			if (name.equals(selected)) {
-				Rectangle slotBounds = LayoutComponent.makeScreenCoords(g.getClipBounds(), slot.getBounds(variablesNew));
+				Rectangle slotBounds = MenuComponent.makeScreenCoords(g.getClipBounds(), slot.getBounds(variablesNew));
 				g.setColor(Color.MAGENTA);
 				g.drawRect(slotBounds.x, slotBounds.y, slotBounds.width - 1, slotBounds.height - 1);
 			}

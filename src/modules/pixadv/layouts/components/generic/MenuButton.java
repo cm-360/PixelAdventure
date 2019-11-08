@@ -8,23 +8,23 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 
 import lib.io.user.KeyCombo;
-import pixadv.graphics.layouts.components.LayoutComponent;
+import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.registry.Registry;
 
-public class Button extends LayoutComponent {
+public class MenuButton extends MenuComponent {
 
 	private HashMap<KeyCombo, Runnable> clickEvents;
 	private String currentTexture = "";
 	
 	// Constructor
-	public Button(HashMap<String, String> boundExpressions, HashMap<KeyCombo, Runnable> clickEvents) {
+	public MenuButton(HashMap<String, String> boundExpressions, HashMap<KeyCombo, Runnable> clickEvents) {
 		super(boundExpressions);
 		this.clickEvents = clickEvents;
 	}
 	
 	// Utility methods
-	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
+	public MenuComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+		if (MenuComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			boolean handled = false;
 			for (KeyCombo combo : clickEvents.keySet())
 				if (keys.containsAll(combo)) {
@@ -37,8 +37,8 @@ public class Button extends LayoutComponent {
 		return null;
 	}
 	
-	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
+	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+		if (MenuComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			boolean handled = false;
 			for (KeyCombo combo : clickEvents.keySet())
 				if (keys.containsAll(combo)) {

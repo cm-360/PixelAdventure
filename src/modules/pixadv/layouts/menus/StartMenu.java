@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import lib.io.user.KeyCombo;
-import modules.pixadv.layouts.components.generic.Button;
+import modules.pixadv.layouts.components.generic.MenuButton;
 import pixadv.graphics.layouts.MenuLayout;
 import pixadv.graphics.swing.components.GamePanel;
 
@@ -32,7 +32,7 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		Button buttonSingleplayer = new Button(boundExpressionsSingleplayer, eventsSingleplayer);
+		MenuButton buttonSingleplayer = new MenuButton(boundExpressionsSingleplayer, eventsSingleplayer);
 		buttonSingleplayer.setTexture("pixadv/gui/start-menu/singleplayer");
 		children.add(buttonSingleplayer);
 		// Multiplayer button
@@ -51,7 +51,7 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		Button buttonMultiplayer = new Button(boundExpressionsMultiplayer, eventsMultiplayer);
+		MenuButton buttonMultiplayer = new MenuButton(boundExpressionsMultiplayer, eventsMultiplayer);
 		buttonMultiplayer.setTexture("pixadv/gui/start-menu/multiplayer");
 		children.add(buttonMultiplayer);
 		// Options button
@@ -67,7 +67,7 @@ public class StartMenu extends MenuLayout {
 				// TODO options menu
 			}
 		});
-		Button buttonOptions = new Button(boundExpressionsOptions, eventsOptions);
+		MenuButton buttonOptions = new MenuButton(boundExpressionsOptions, eventsOptions);
 		buttonOptions.setTexture("pixadv/gui/start-menu/options");
 		children.add(buttonOptions);
 		// Quit button
@@ -84,7 +84,7 @@ public class StartMenu extends MenuLayout {
 				System.exit(0);
 			}
 		});
-		Button buttonQuit = new Button(boundExpressionsQuit, eventsQuit);
+		MenuButton buttonQuit = new MenuButton(boundExpressionsQuit, eventsQuit);
 		buttonQuit.setTexture("pixadv/gui/start-menu/quit");
 		children.add(buttonQuit);
 	}

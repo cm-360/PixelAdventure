@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import lib.io.user.KeyCombo;
-import pixadv.graphics.layouts.components.LayoutComponent;
+import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.registry.Registry;
 
 public class MenuLayout {
 
 	public static double menuScale = 2;
 	
-	protected ArrayList<LayoutComponent> children = new ArrayList<LayoutComponent>();
+	protected ArrayList<MenuComponent> children = new ArrayList<MenuComponent>();
 	
 	// Constructor
 	public MenuLayout() {
@@ -24,33 +24,33 @@ public class MenuLayout {
 	// Paint method
 	public void paint(Graphics g, Registry registry) {
 		HashMap<String, Double> bounds = getBounds(g.getClipBounds());
-		for (LayoutComponent c : children) {
+		for (MenuComponent c : children) {
 			// TODO calculate own dimensions
 			c.paint(g, registry, bounds);
 		}
 	}
 	
 	// Interaction methods
-	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys) {
+	public MenuComponent processClick(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
-		for (LayoutComponent child : children) {
+		for (MenuComponent child : children) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
-			if (LayoutComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
+			if (MenuComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
 				return child.processClick(gBounds, p, keys, selfBounds);
 			}
 		}
 		return null;
 	}
 	
-	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys) {
+	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
-		for (LayoutComponent child : children) {
+		for (MenuComponent child : children) {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
-			if (LayoutComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
+			if (MenuComponent.makeScreenCoords(gBounds, childBounds).contains(p)) {
 				return child.processHover(gBounds, p, keys, selfBounds);
 			}
 		}
@@ -59,6 +59,11 @@ public class MenuLayout {
 	
 	public String processKey() {
 		return "";
+	}
+	
+	public void unfocusChildren() {
+		for (MenuComponent child : children)
+			child.unfocusChildren();
 	}
 	
 	// Utility method
