@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import lib.io.user.KeyCombo;
 import modules.pixadv.layouts.components.generic.MenuButton;
+import modules.pixadv.layouts.components.generic.MenuImage;
 import pixadv.graphics.layouts.MenuLayout;
 import pixadv.graphics.swing.components.GamePanel;
 
@@ -16,6 +17,15 @@ public class StartMenu extends MenuLayout {
 	
 	public StartMenu(GamePanel parent) {
 		super();
+		// Logo
+		HashMap<String, String> boundExpressionsLogo = new HashMap<String, String>();
+		boundExpressionsLogo.put("x", "(pw / 2) - (120 * scale)");
+		boundExpressionsLogo.put("y", "(ph / 2) + (20 * scale) + 100");
+		boundExpressionsLogo.put("w", "240 * scale");
+		boundExpressionsLogo.put("h", "32 * scale");
+		MenuImage imageLogo = new MenuImage(boundExpressionsLogo, null);
+		imageLogo.setTexture("pixadv/gui/start-menu/logo");
+		children.add(imageLogo);
 		// Singleplayer button
 		HashMap<String, String> boundExpressionsSingleplayer = new HashMap<String, String>();
 		boundExpressionsSingleplayer.put("x", "(pw / 2) - (120 * scale)");
