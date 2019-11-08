@@ -23,7 +23,7 @@ public class Button extends LayoutComponent {
 	}
 	
 	// Utility methods
-	public boolean processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			boolean handled = false;
 			for (KeyCombo combo : clickEvents.keySet())
@@ -31,13 +31,13 @@ public class Button extends LayoutComponent {
 					handled = true;
 					clickEvents.get(combo).run();
 				}
-			return handled;
-		} else {
-			return false;
+			if (handled)
+				return this;
 		}
+		return null;
 	}
 	
-	public boolean processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		if (LayoutComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
 			boolean handled = false;
 			for (KeyCombo combo : clickEvents.keySet())
@@ -45,10 +45,10 @@ public class Button extends LayoutComponent {
 					handled = true;
 					clickEvents.get(combo).run();
 				}
-			return handled;
-		} else {
-			return false;
+			if (handled)
+				return this;
 		}
+		return null;
 	}
 	
 	// Control method

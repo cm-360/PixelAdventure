@@ -31,7 +31,7 @@ public class MenuLayout {
 	}
 	
 	// Interaction methods
-	public boolean processClick(Rectangle gBounds, Point p, KeyCombo keys) {
+	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
 		for (LayoutComponent child : children) {
@@ -41,10 +41,10 @@ public class MenuLayout {
 				return child.processClick(gBounds, p, keys, selfBounds);
 			}
 		}
-		return false;
+		return null;
 	}
 	
-	public boolean processHover(Rectangle gBounds, Point p, KeyCombo keys) {
+	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = getBounds(gBounds);
 		for (LayoutComponent child : children) {
@@ -54,7 +54,7 @@ public class MenuLayout {
 				return child.processHover(gBounds, p, keys, selfBounds);
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	public String processKey() {

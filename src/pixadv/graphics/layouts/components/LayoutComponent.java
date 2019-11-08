@@ -38,7 +38,7 @@ public class LayoutComponent {
 	}
 	
 	// Interaction methods
-	public boolean processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public LayoutComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
 		for (LayoutComponent child : children.values()) {
@@ -48,10 +48,10 @@ public class LayoutComponent {
 				return child.processClick(gBounds, p, keys, selfBounds);
 			}
 		}
-		return false;
+		return null;
 	}
 	
-	public boolean processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	public LayoutComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
 		// Check if mouse is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
 		for (LayoutComponent child : children.values()) {
@@ -61,7 +61,7 @@ public class LayoutComponent {
 				return child.processHover(gBounds, p, keys, selfBounds);
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	public String processKey() {

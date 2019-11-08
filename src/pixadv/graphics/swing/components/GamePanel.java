@@ -27,6 +27,7 @@ import modules.pixadv.layouts.menus.StartMenu;
 import modules.pixadv.objects.tiles.Air;
 import modules.pixadv.objects.tiles.terra.Dirt;
 import pixadv.graphics.layouts.MenuLayout;
+import pixadv.graphics.layouts.components.LayoutComponent;
 import pixadv.graphics.picasso.Picasso;
 import pixadv.registry.Registry;
 import pixadv.world.storage.universe.LocalUniverse;
@@ -128,9 +129,9 @@ public class GamePanel extends JPanel {
 			public void mousePressed(MouseEvent arg0) {
 				mouseClickOrigin = arg0.getPoint();
 				mouseLocation = mouseClickOrigin;
-				boolean result = currentMenu.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
+				LayoutComponent focused = currentMenu.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 				// Process click as block interaction instead
-				if (!result) {
+				if (focused != null) {
 					try {
 						World world = loadedUniverse.currentWorld();
 						cameraXOld = world.getCameraX();
@@ -164,7 +165,7 @@ public class GamePanel extends JPanel {
 				mouseLocation = arg0.getPoint();
 				if (dragLayer == -1 || dragLayer == 1)
 					// Check if drag is on a menu object
-					if (currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys)))
+					if (currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys)) != null)
 						dragLayer = 1;
 				if (dragLayer == -1 || dragLayer == 0) {
 					// Process drag as camera movement
