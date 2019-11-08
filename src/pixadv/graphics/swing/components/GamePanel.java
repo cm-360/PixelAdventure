@@ -50,7 +50,9 @@ public class GamePanel extends JPanel {
 	private Rectangle bounds;
 	private Point mouseLocation;
 	private Point mouseClickOrigin;
+	private int dragLayer = -1;
 	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
+	
 	private double cameraXOld, cameraYOld;
 	
 	private Rectangle lastBounds = new Rectangle();
@@ -69,6 +71,7 @@ public class GamePanel extends JPanel {
 			public void run() {
 				while (true)
 					try {
+						// Process movement input
 						EntityObject player = loadedUniverse.getPlayer();
 						HashMap<String, String> data = new Gson().fromJson(player.getData(), HashMap.class);
 						if (pressedKeys.contains(Character.getNumericValue('w')))
@@ -81,6 +84,8 @@ public class GamePanel extends JPanel {
 							data.put("xVel", "5");
 						//loadedUniverse.getPhysics().manualChange(player, new Gson().toJson(data));
 						player.dataReceived(null, "physics", new Gson().toJson(data));
+						// Process other keyboard input
+						
 					} catch (NullPointerException e) {
 						// Do nothing
 					} catch (Exception e) {
@@ -143,6 +148,10 @@ public class GamePanel extends JPanel {
 					} 
 				}
 			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				dragLayer = -1;
+			}
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -153,9 +162,13 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
 				mouseLocation = arg0.getPoint();
-				boolean result = currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
-				// Process drag as camera
-				if (!result) {
+				if (dragLayer == -1 || dragLayer == 1)
+					// Check if drag is on a menu object
+					if (currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys)))
+						dragLayer = 1;
+				if (dragLayer == -1 || dragLayer == 0) {
+					// Process drag as camera movement
+					dragLayer = 0;
 					try {
 						World world = loadedUniverse.currentWorld();
 						Picasso picasso = loadedUniverse.getRender();
