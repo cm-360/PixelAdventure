@@ -63,7 +63,7 @@ public class Registry {
 							BufferedImage bufferedImage = new BufferedImage(iconImage.getIconWidth(), iconImage.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 							bufferedImage.getGraphics().drawImage(iconImage.getImage(), 0, 0, null);
 							TEXTURES.put(textureID, bufferedImage);
-							System.out.printf("  Loaded texture 'modules/%s' (%s)\n", relativeName, textureID);
+							System.out.printf("  Loaded texture '%s' (modules/%s)\n", textureID, relativeName);
 						} catch (Exception e) {
 							System.out.printf("  Error loading texture: 'modules/%s'\n", relativeName);
 							System.out.printf("  %s: %s\n", e.getClass().getName(), e.getMessage());
@@ -97,7 +97,7 @@ public class Registry {
 			for (String id : tiles.keySet()) {
 				String idNew = String.format("%s/%s", builtinModule.getID(), id);
 				TILES.put(idNew, tiles.get(id));
-				System.out.printf("  Registered '%s': %s\n", idNew, TILES.get(idNew).getName());
+				System.out.printf("  Registered '%s' (%s)\n", idNew, TILES.get(idNew).getName());
 			}
 			// Close URLClassLoader
 			ucl.close();
@@ -123,10 +123,10 @@ public class Registry {
 					int count = 0;
 					while (TILES.containsKey(idNew + count))
 						count++;
-					System.out.printf("  Registered '%s': %s\n", idNew + count, TILES.get(idNew).getName());
+					System.out.printf("  Registered '%s' (%s)\n", idNew + count, TILES.get(idNew).getName());
 				} else {
 					TILES.put(idNew, tiles.get(id));
-					System.out.printf("  Registered '%s': %s\n", idNew, TILES.get(idNew).getName());
+					System.out.printf("  Registered '%s' (%s)\n", idNew, TILES.get(idNew).getName());
 				}
 			}
 			// Close URLClassLoader
