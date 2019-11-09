@@ -3,6 +3,7 @@ bin/
 data/
 .classpath
 .project
+out.txt
 
 # Compiled class file
 *.class
