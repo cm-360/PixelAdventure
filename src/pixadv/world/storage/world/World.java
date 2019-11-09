@@ -12,7 +12,6 @@ import pixadv.world.types.tiles.TileObject;
 
 public class World {
 
-	@SuppressWarnings("unused")
 	private final Registry REG;
 	
 	protected final HashMap<String, String> INFO;
