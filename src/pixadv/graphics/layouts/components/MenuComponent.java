@@ -66,7 +66,7 @@ public class MenuComponent {
 			// Convert child bounds to on-screen coordinates and check for intersect
 			HashMap<String, Double> childBounds = children.get(childName).getBounds(selfBounds);
 			if (makeScreenCoords(gBounds, childBounds).contains(mousePos)) {
-				String result = attemptFocus(gBounds, mousePos, selfBounds, childName);
+				String result = children.get(childName).attemptFocus(gBounds, mousePos, selfBounds, childName);
 				if (!result.isEmpty())
 					return String.format("%s/%s", myName, result);
 			}

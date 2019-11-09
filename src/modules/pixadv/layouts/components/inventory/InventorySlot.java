@@ -20,7 +20,7 @@ public class InventorySlot extends MenuComponent {
 	
 	// Constructor
 	public InventorySlot(InventoryGrid parent, int gx, int gy) {
-		super(getExpressions(), null);
+		super(getExpressions(), null, true);
 		this.parent = parent;
 		this.gx = gx; this.gy = gy;
 	}
