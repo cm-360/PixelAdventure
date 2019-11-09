@@ -1,11 +1,9 @@
 package pixadv.graphics.layouts;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashMap;
 
-import lib.io.user.KeyCombo;
 import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.graphics.swing.util.InputProcessor;
 import pixadv.registry.Registry;

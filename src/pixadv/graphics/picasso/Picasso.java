@@ -44,6 +44,7 @@ public class Picasso {
 		// Set bounding box
 			Rectangle gbounds = g.getClipBounds(), bounds;
 		if (world == null) {
+			// Draw loading message
 			g.setColor(Color.BLACK);
 			g.drawRect(0, 0, gbounds.width, gbounds.height);
 			int shade = (int) (127 * (Math.sin(System.currentTimeMillis() / 500.0) + 1));
@@ -74,7 +75,7 @@ public class Picasso {
 			if (optimized) {
 				// Get list of chunk updates
 				ArrayList<String> chunkUpdates = world.getChunkUpdates();
-				// 
+				// Iterate over chunks
 				for (int cx = (int) Math.round((minX + 0.5) / Chunk.getSize() - 0.5); cx <= (int) Math.round((maxX - 0.5) / Chunk.getSize() - 0.5); cx++)
 					for (int cy = (int) Math.round((minY + 0.5) / Chunk.getSize() - 0.5); cy <= (int) Math.round((maxY - 0.5) / Chunk.getSize() - 0.5); cy++) {
 						if (cy >= 0 && cy < world.getHeight() / Chunk.getSize()) {
