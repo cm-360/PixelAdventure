@@ -18,17 +18,17 @@ public class StartMenu extends MenuLayout {
 		super();
 		// Logo
 		HashMap<String, String> boundExpressionsLogo = new HashMap<String, String>();
-		boundExpressionsLogo.put("x", "(pw / 2) - (120 * scale)");
-		boundExpressionsLogo.put("y", "(ph / 2) + (20 * scale) + 100");
-		boundExpressionsLogo.put("w", "240 * scale");
-		boundExpressionsLogo.put("h", "32 * scale");
+		boundExpressionsLogo.put("x", "(pw / 2) - (155 * scale)");
+		boundExpressionsLogo.put("y", "(ph / 2) + (60 * scale)");
+		boundExpressionsLogo.put("w", "310 * scale");
+		boundExpressionsLogo.put("h", "110 * scale");
 		MenuComponent imageLogo = new MenuComponent(boundExpressionsLogo, null);
 		imageLogo.setTexture("pixadv/gui/start-menu/logo");
-		children.add(imageLogo);
+		children.put("imageLogo", imageLogo);
 		// Singleplayer button
 		HashMap<String, String> boundExpressionsSingleplayer = new HashMap<String, String>();
 		boundExpressionsSingleplayer.put("x", "(pw / 2) - (120 * scale)");
-		boundExpressionsSingleplayer.put("y", "(ph / 2) + (20 * scale)");
+		boundExpressionsSingleplayer.put("y", "(ph / 2) - (16 * scale)");
 		boundExpressionsSingleplayer.put("w", "240 * scale");
 		boundExpressionsSingleplayer.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsSingleplayer = new HashMap<KeyCombo, Runnable>();
@@ -41,13 +41,13 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		MenuComponent buttonSingleplayer = new MenuComponent(boundExpressionsSingleplayer, eventsSingleplayer);
+		MenuComponent buttonSingleplayer = new MenuComponent(boundExpressionsSingleplayer, eventsSingleplayer, true);
 		buttonSingleplayer.setTexture("pixadv/gui/start-menu/singleplayer");
-		children.add(buttonSingleplayer);
+		children.put("buttonSingleplayer", buttonSingleplayer);
 		// Multiplayer button
 		HashMap<String, String> boundExpressionsMultiplayer = new HashMap<String, String>();
 		boundExpressionsMultiplayer.put("x", "(pw / 2) - (120 * scale)");
-		boundExpressionsMultiplayer.put("y", "(ph / 2) - (16 * scale)");
+		boundExpressionsMultiplayer.put("y", "(ph / 2) - (52 * scale)");
 		boundExpressionsMultiplayer.put("w", "240 * scale");
 		boundExpressionsMultiplayer.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsMultiplayer = new HashMap<KeyCombo, Runnable>();
@@ -60,14 +60,14 @@ public class StartMenu extends MenuLayout {
 				}
 			}
 		});
-		MenuComponent buttonMultiplayer = new MenuComponent(boundExpressionsMultiplayer, eventsMultiplayer);
+		MenuComponent buttonMultiplayer = new MenuComponent(boundExpressionsMultiplayer, eventsMultiplayer, true);
 		buttonMultiplayer.setTexture("pixadv/gui/start-menu/multiplayer");
-		children.add(buttonMultiplayer);
+		children.put("buttonMultiplayer", buttonMultiplayer);
 		// Options button
 		HashMap<String, String> boundExpressionsOptions = new HashMap<String, String>();
 		boundExpressionsOptions.put("x", "(pw / 2) - (120 * scale)");
-		boundExpressionsOptions.put("y", "(ph / 2) - (52 * scale)");
-		boundExpressionsOptions.put("w", "(118 * scale)");
+		boundExpressionsOptions.put("y", "(ph / 2) - (88 * scale)");
+		boundExpressionsOptions.put("w", "118 * scale");
 		boundExpressionsOptions.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsOptions = new HashMap<KeyCombo, Runnable>();
 		eventsOptions.put(new KeyCombo(1, new ArrayList<Integer>()), new Runnable() {
@@ -76,14 +76,14 @@ public class StartMenu extends MenuLayout {
 				// TODO options menu
 			}
 		});
-		MenuComponent buttonOptions = new MenuComponent(boundExpressionsOptions, eventsOptions);
+		MenuComponent buttonOptions = new MenuComponent(boundExpressionsOptions, eventsOptions, true);
 		buttonOptions.setTexture("pixadv/gui/start-menu/options");
-		children.add(buttonOptions);
+		children.put("buttonOptions", buttonOptions);
 		// Quit button
 		HashMap<String, String> boundExpressionsQuit = new HashMap<String, String>();
 		boundExpressionsQuit.put("x", "(pw / 2) + (2 * scale)");
-		boundExpressionsQuit.put("y", "(ph / 2) - (52 * scale)");
-		boundExpressionsQuit.put("w", "(118 * scale)");
+		boundExpressionsQuit.put("y", "(ph / 2) - (88 * scale)");
+		boundExpressionsQuit.put("w", "118 * scale");
 		boundExpressionsQuit.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsQuit = new HashMap<KeyCombo, Runnable>();
 		eventsQuit.put(new KeyCombo(1, new ArrayList<Integer>()), new Runnable() {
@@ -93,9 +93,9 @@ public class StartMenu extends MenuLayout {
 				System.exit(0);
 			}
 		});
-		MenuComponent buttonQuit = new MenuComponent(boundExpressionsQuit, eventsQuit);
+		MenuComponent buttonQuit = new MenuComponent(boundExpressionsQuit, eventsQuit, true);
 		buttonQuit.setTexture("pixadv/gui/start-menu/quit");
-		children.add(buttonQuit);
+		children.put("buttonQuit", buttonQuit);
 	}
 
 }

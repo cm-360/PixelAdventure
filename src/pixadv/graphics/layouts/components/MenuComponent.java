@@ -13,18 +13,26 @@ import pixadv.registry.Registry;
 public class MenuComponent {
 	
 	protected HashMap<String, String> boundExpressions;
-	protected HashMap<KeyCombo, Runnable> interactEvents;
 	protected String currentTexture = "";
+	
+	protected HashMap<KeyCombo, Runnable> interactEvents;
+	protected boolean focusable = false;
 	
 	protected HashMap<String, MenuComponent> children = new HashMap<String, MenuComponent>();
 	
-	// Constructor
+	// Constructors
 	public MenuComponent(HashMap<String, String> boundExpressions, HashMap<KeyCombo, Runnable> interactEvents) {
 		this.boundExpressions = boundExpressions;
 		this.interactEvents = interactEvents;
 	}
 	
-	// Paint method
+	public MenuComponent(HashMap<String, String> boundExpressions, HashMap<KeyCombo, Runnable> interactEvents, boolean focusable) {
+		this.boundExpressions = boundExpressions;
+		this.interactEvents = interactEvents;
+		this.focusable = focusable;
+	}
+	
+	// Paint methods
 	public void paint(Graphics g, Registry registry, HashMap<String, Double> variables) {
 		// Calculate own dimensions
 		HashMap<String, Double> selfBounds = getBounds(variables), variablesNew = new HashMap<String, Double>();
@@ -41,70 +49,33 @@ public class MenuComponent {
 			g.drawString(currentTexture, selfScreenBounds.x + 3, selfScreenBounds.y + 13);
 		}
 		// Paint children components
-		for (String cName : children.keySet()) {
-			children.get(cName).paint(g, registry, variables);
+		for (String childName : children.keySet()) {
+			children.get(childName).paint(g, registry, variables);
 		}
 	}
 	
-	public HashMap<String, Double> getBounds(HashMap<String, Double> variables) {
-		return calculateBounds(boundExpressions, variables);
+	public void setTexture(String textureID) {
+		currentTexture = textureID;
 	}
 	
-	// Interaction methods
-	public MenuComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+	// Focus methods
+	public String attemptFocus(Rectangle gBounds, Point mousePos, HashMap<String, Double> variables, String myName) {
 		// Check if click is on any children
 		HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
-		for (MenuComponent child : children.values()) {
+		for (String childName : children.keySet()) {
 			// Convert child bounds to on-screen coordinates and check for intersect
-			HashMap<String, Double> childBounds = child.getBounds(selfBounds);
-			if (makeScreenCoords(gBounds, childBounds).contains(p))
-				return child.processClick(gBounds, p, keys, selfBounds);
+			HashMap<String, Double> childBounds = children.get(childName).getBounds(selfBounds);
+			if (makeScreenCoords(gBounds, childBounds).contains(mousePos)) {
+				String result = attemptFocus(gBounds, mousePos, selfBounds, childName);
+				if (!result.isEmpty())
+					return String.format("%s/%s", myName, result);
+			}
 		}
-		// Check if event can be self-processed
-		if (interactEvents == null) {
-			return null;
-		} else {
-			boolean handled = false;
-			for (KeyCombo combo : interactEvents.keySet())
-				if (keys.containsAll(combo)) {
-					handled = true;
-					interactEvents.get(combo).run();
-				}
-			if (handled)
-				return this;
-			else
-				return null;
-		}
-	}
-	
-	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		// Check if click is on any children
-				HashMap<String, Double> selfBounds = updatePBounds(variables, getBounds(variables));
-				for (MenuComponent child : children.values()) {
-					// Convert child bounds to on-screen coordinates and check for intersect
-					HashMap<String, Double> childBounds = child.getBounds(selfBounds);
-					if (makeScreenCoords(gBounds, childBounds).contains(p))
-						return child.processHover(gBounds, p, keys, selfBounds);
-				}
-				// Check if event can be self-processed
-				if (interactEvents == null) {
-					return null;
-				} else {
-					boolean handled = false;
-					for (KeyCombo combo : interactEvents.keySet())
-						if (keys.containsAll(combo)) {
-							handled = true;
-							interactEvents.get(combo).run();
-						}
-					if (handled)
-						return this;
-					else
-						return null;
-				}
-	}
-	
-	public String processKey() {
-		return "";
+		// Focus self
+		if (focusable && makeScreenCoords(gBounds, getBounds(variables)).contains(mousePos))
+			return myName + "/";
+		else
+			return "";
 	}
 	
 	public void unfocusChildren() {
@@ -112,8 +83,31 @@ public class MenuComponent {
 			child.unfocusChildren();
 	}
 	
-	public void setTexture(String textureID) {
-		currentTexture = textureID;
+	public MenuComponent getChild(String childPath, String myName) {
+		if (childPath.isEmpty()) {
+			// Last child in path
+			return this;
+		} else {
+			// Search other children for correct child
+			String[] childPathSplit = childPath.split("\\/", 2);
+			return children.get(childPathSplit[0]).getChild(childPathSplit[1], childPathSplit[0]);
+		}
+		
+	}
+	
+	// Interaction methods
+	public void interactClick(Rectangle gBounds, Point mousePos, long clickDuration, KeyCombo keys, HashMap<String, Double> variables) {
+		for (KeyCombo combo : interactEvents.keySet())
+			if (keys.containsAll(combo))
+				interactEvents.get(combo).run();
+	}
+	
+	public void interactHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+		
+	}
+	
+	public void interactKey(KeyCombo keys) {
+		
 	}
 	
 	// Utility methods
@@ -123,6 +117,10 @@ public class MenuComponent {
 		for (String variable : boundExpressions.keySet())
 			results.put(variable, ExpUtil.calculate(boundExpressions.get(variable), variables));
 		return results;
+	}
+	
+	public HashMap<String, Double> getBounds(HashMap<String, Double> variables) {
+		return calculateBounds(boundExpressions, variables);
 	}
 	
 	public HashMap<String, Double> updatePBounds(HashMap<String, Double> old, HashMap<String, Double> calculated) {

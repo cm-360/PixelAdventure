@@ -29,6 +29,7 @@ import modules.pixadv.objects.tiles.terra.Dirt;
 import pixadv.graphics.layouts.MenuLayout;
 import pixadv.graphics.layouts.components.MenuComponent;
 import pixadv.graphics.picasso.Picasso;
+import pixadv.graphics.swing.util.InputProcessor;
 import pixadv.registry.Registry;
 import pixadv.world.storage.universe.LocalUniverse;
 import pixadv.world.storage.universe.NetworkUniverse;
@@ -51,7 +52,6 @@ public class GamePanel extends JPanel {
 	private Rectangle bounds;
 	private Point mouseLocation;
 	private Point mouseClickOrigin;
-	private int dragLayer = -1;
 	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
 	
 	private double cameraXOld, cameraYOld;
@@ -127,11 +127,15 @@ public class GamePanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
+				// Save current mouse info
 				mouseClickOrigin = arg0.getPoint();
 				mouseLocation = mouseClickOrigin;
-				MenuComponent focused = currentMenu.processClick(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
+				// Attempt to focus
+				InputProcessor inputProcessor = currentMenu.getInputProcessor();
+				inputProcessor.mousePressed(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
+				MenuComponent focused = inputProcessor.getFocusedComponent();
 				// Process click as block interaction instead
-				if (focused != null) {
+				if (focused == null) {
 					try {
 						World world = loadedUniverse.currentWorld();
 						cameraXOld = world.getCameraX();
@@ -151,33 +155,30 @@ public class GamePanel extends JPanel {
 			}
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				dragLayer = -1;
+				// Save current mouse info
+				mouseLocation = arg0.getPoint();
+				currentMenu.getInputProcessor().mouseReleased(lastBounds, mouseLocation, new KeyCombo(arg0.getButton(), pressedKeys));
 			}
 		});
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
+				// Save current mouse info
 				mouseLocation = arg0.getPoint();
-				currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
+				currentMenu.getInputProcessor().mouseMoved(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
 			}
 			@Override
 			public void mouseDragged(MouseEvent arg0) {
+				// Save current mouse info
 				mouseLocation = arg0.getPoint();
-				if (dragLayer == -1 || dragLayer == 1)
-					// Check if drag is on a menu object
-					if (currentMenu.processHover(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys)) != null)
-						dragLayer = 1;
-				if (dragLayer == -1 || dragLayer == 0) {
-					// Process drag as camera movement
-					dragLayer = 0;
-					try {
-						World world = loadedUniverse.currentWorld();
-						Picasso picasso = loadedUniverse.getRender();
-						world.setCameraX(cameraXOld + ((mouseClickOrigin.getX() - mouseLocation.getX()) / picasso.getTileSize()));
-						world.setCameraY(cameraYOld + ((mouseLocation.getY() - mouseClickOrigin.getY()) / picasso.getTileSize()));
-					} catch (NullPointerException e) {
-						// Do nothing
-					}
+				currentMenu.getInputProcessor().mouseMoved(lastBounds, mouseLocation, new KeyCombo(-1, pressedKeys));
+				try {
+					World world = loadedUniverse.currentWorld();
+					Picasso picasso = loadedUniverse.getRender();
+					world.setCameraX(cameraXOld + ((mouseClickOrigin.getX() - mouseLocation.getX()) / picasso.getTileSize()));
+					world.setCameraY(cameraYOld + ((mouseLocation.getY() - mouseClickOrigin.getY()) / picasso.getTileSize()));
+				} catch (NullPointerException e) {
+					// Do nothing
 				}
 			}
 		});

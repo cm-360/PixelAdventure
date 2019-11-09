@@ -54,18 +54,13 @@ public class InventorySlot extends MenuComponent {
 	
 	// Interaction methods
 	@Override
-	public MenuComponent processClick(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		if (MenuComponent.makeScreenCoords(gBounds, getBounds(variables)).contains(p)) {
-			parent.setSelected(String.format("%s_%s", gx, gy));
-			return this;
-		} else {
-			return null;
-		}
+	public void interactClick(Rectangle gBounds, Point p, long clickDuration, KeyCombo keys, HashMap<String, Double> variables) {
+		parent.setSelected(String.format("%s_%s", gx, gy));
 	}
 	
 	@Override
-	public MenuComponent processHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
-		return null;
+	public void interactHover(Rectangle gBounds, Point p, KeyCombo keys, HashMap<String, Double> variables) {
+		
 	}
 
 }
