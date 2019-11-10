@@ -56,6 +56,7 @@ public class PixelAdventure {
 			// Start hosting the game
 			ServerSocket serverSocket = new ServerSocket(port);
 			hosting = true;
+			System.out.printf("Server hosted at '%s:%d'\n", serverSocket.getInetAddress().getHostAddress(), port);
 			while (hosting) {
 				try {
 					Socket socket = serverSocket.accept();
