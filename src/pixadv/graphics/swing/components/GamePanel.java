@@ -237,6 +237,8 @@ public class GamePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		lastBounds = g.getClipBounds();
+		// Rescale the menu
+		MenuLayout.autoScale(lastBounds.width, lastBounds.height);
 		// Calculate FPS
 		long current = System.currentTimeMillis();
 		if (lastRun == -1)

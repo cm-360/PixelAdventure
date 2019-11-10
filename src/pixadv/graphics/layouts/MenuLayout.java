@@ -32,7 +32,7 @@ public class MenuLayout {
 		return inputProcessor;
 	}
 	
-	// Utility method
+	// Utility methods
 	public HashMap<String, Double> getBounds(Rectangle gBounds) {
 		HashMap<String, Double> variables = new HashMap<String, Double>();
 		variables.put("px", (double) gBounds.x);
@@ -41,6 +41,19 @@ public class MenuLayout {
 		variables.put("ph", (double) gBounds.height);
 		variables.put("scale", menuScale);
 		return variables;
+	}
+	
+	public static void autoScale(int screenWidth, int screenHeight) {
+		int area = screenWidth * screenHeight;
+		// Auto scale the menu
+		if (area < 300000)
+			menuScale = 0.5;
+		else if (area >= 300000 && area < 500000)
+			menuScale = 1;
+		else if (area >= 500000 && area < 900000)
+			menuScale = 1.5;
+		else
+			menuScale = 2;
 	}
 
 }
