@@ -186,9 +186,9 @@ public class GamePanel extends JPanel {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				try {
 					Picasso picasso = loadedUniverse.getRender();
-					if (arg0.getWheelRotation() > 0 && picasso.getTileScale() > 0.5) {
+					if (arg0.getWheelRotation() > 0 && picasso.getTileScale() > 0.75) {
 						picasso.setTileScale(picasso.getTileScale() - 0.25);
-					} else if (arg0.getWheelRotation() < 0 && picasso.getTileScale() < 10) {
+					} else if (arg0.getWheelRotation() < 0 && picasso.getTileScale() < 5) {
 						picasso.setTileScale(picasso.getTileScale() + 0.25);
 					}
 				} catch (NullPointerException e) {
