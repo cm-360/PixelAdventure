@@ -175,8 +175,8 @@ public class GamePanel extends JPanel {
 				try {
 					World world = loadedUniverse.currentWorld();
 					Picasso picasso = loadedUniverse.getRender();
-					world.setCameraX(cameraXOld + ((mouseClickOrigin.getX() - mouseLocation.getX()) / picasso.getTileSize()));
-					world.setCameraY(cameraYOld + ((mouseLocation.getY() - mouseClickOrigin.getY()) / picasso.getTileSize()));
+					world.setCameraX(cameraXOld + ((mouseClickOrigin.getX() - mouseLocation.getX()) / (32 * picasso.getTileScale())));
+					world.setCameraY(cameraYOld + ((mouseLocation.getY() - mouseClickOrigin.getY()) / (32 * picasso.getTileScale())));
 				} catch (NullPointerException e) {
 					// Do nothing
 				}
@@ -186,12 +186,11 @@ public class GamePanel extends JPanel {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				try {
 					Picasso picasso = loadedUniverse.getRender();
-					if (arg0.getWheelRotation() > 0 && picasso.getTileSize() > 8) {
-						picasso.setTileSize(picasso.getTileSize() - 4);
-					} else if (arg0.getWheelRotation() < 0 && picasso.getTileSize() < 128) {
-						picasso.setTileSize(picasso.getTileSize() + 4);
-					} else return;
-					picasso.clearCache();
+					if (arg0.getWheelRotation() > 0 && picasso.getTileScale() > 0.5) {
+						picasso.setTileScale(picasso.getTileScale() - 0.25);
+					} else if (arg0.getWheelRotation() < 0 && picasso.getTileScale() < 10) {
+						picasso.setTileScale(picasso.getTileScale() + 0.25);
+					}
 				} catch (NullPointerException e) {
 					// Do nothing
 				}
