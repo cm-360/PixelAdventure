@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import lib.expr.ExpUtil;
 import lib.io.user.KeyCombo;
+import pixadv.graphics.layouts.MenuLayout;
 import pixadv.registry.Registry;
 
 public class MenuComponent {
@@ -53,7 +54,7 @@ public class MenuComponent {
 		}
 		// Paint text
 		if (!textContent.isEmpty()) {
-			g.setFont(textFont);
+			g.setFont(textFont.deriveFont((float) (textFont.getSize() * MenuLayout.menuScale)));
 			FontMetrics fontMetrics = g.getFontMetrics();
 			g.drawString(textContent,
 					(int) (selfScreenBounds.x + (selfScreenBounds.width - fontMetrics.stringWidth(textContent)) / 2.0),

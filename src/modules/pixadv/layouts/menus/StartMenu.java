@@ -18,7 +18,7 @@ public class StartMenu extends MenuLayout {
 	public StartMenu(GamePanel parent) {
 		super();
 		//
-		Font menuFont = new Font("SansSerif", 0, 36);
+		Font menuFont = new Font("SansSerif", 0, 18);
 		
 		// Logo
 		HashMap<String, String> boundExpressionsLogo = new HashMap<String, String>();
