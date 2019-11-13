@@ -52,7 +52,7 @@ public class GamePanel extends JPanel {
 	private Rectangle bounds;
 	private Point mouseLocation;
 	private Point mouseClickOrigin;
-	private ArrayList<Integer> pressedKeys = new ArrayList<Integer>();
+	private ArrayList<Character> pressedKeys = new ArrayList<Character>();
 	
 	private double cameraXOld, cameraYOld;
 	
@@ -75,16 +75,16 @@ public class GamePanel extends JPanel {
 						// Process movement input
 						EntityObject player = loadedUniverse.getPlayer();
 						HashMap<String, String> data = new Gson().fromJson(player.getData(), HashMap.class);
-						if (pressedKeys.contains(Character.getNumericValue('w')))
+						if (pressedKeys.contains('w'))
 							data.put("yVel", "15");
-						if (pressedKeys.contains(Character.getNumericValue('s')))
+						if (pressedKeys.contains('s'))
 							;
-						if (pressedKeys.contains(Character.getNumericValue('a')))
+						if (pressedKeys.contains('a'))
 							data.put("xVel", "-5");
-						if (pressedKeys.contains(Character.getNumericValue('d')))
+						if (pressedKeys.contains('d'))
 							data.put("xVel", "5");
 						//loadedUniverse.getPhysics().manualChange(player, new Gson().toJson(data));
-						player.dataReceived(null, "physics", new Gson().toJson(data));
+						player.dataReceived(null, "movement", new Gson().toJson(data));
 						// Process other keyboard input
 						
 					} catch (NullPointerException e) {
@@ -201,13 +201,13 @@ public class GamePanel extends JPanel {
 		addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				int key = arg0.getKeyCode();
+				char key = arg0.getKeyChar();
 				if (!pressedKeys.contains(key))
 					pressedKeys.add(key);
 			}
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				pressedKeys.remove((Object) arg0.getKeyChar());
+				pressedKeys.remove((Character) arg0.getKeyChar());
 			}
 			@Override
 			public void keyTyped(KeyEvent arg0) {

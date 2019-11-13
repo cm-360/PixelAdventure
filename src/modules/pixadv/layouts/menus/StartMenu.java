@@ -44,7 +44,7 @@ public class StartMenu extends MenuLayout {
 		boundExpressionsSingleplayer.put("w", "240 * scale");
 		boundExpressionsSingleplayer.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsSingleplayer = new HashMap<KeyCombo, Runnable>();
-		eventsSingleplayer.put(new KeyCombo(1, new ArrayList<Integer>()), new Runnable() {
+		eventsSingleplayer.put(new KeyCombo(1, new ArrayList<Character>()), new Runnable() {
 			@Override
 			public void run() {
 				if (parent.loadUniverse(parent.getRegistry(), new File("./data/saves/Universe Zero"))) {
@@ -64,7 +64,7 @@ public class StartMenu extends MenuLayout {
 		boundExpressionsMultiplayer.put("w", "240 * scale");
 		boundExpressionsMultiplayer.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsMultiplayer = new HashMap<KeyCombo, Runnable>();
-		eventsMultiplayer.put(new KeyCombo(1, new ArrayList<Integer>()), new Runnable() {
+		eventsMultiplayer.put(new KeyCombo(1, new ArrayList<Character>()), new Runnable() {
 			@Override
 			public void run() {
 				if (parent.loadUniverse(parent.getRegistry(), "127.0.0.1:43234", String.format("%s:%s", playerID, playerKey))) {
@@ -84,7 +84,7 @@ public class StartMenu extends MenuLayout {
 		boundExpressionsOptions.put("w", "118 * scale");
 		boundExpressionsOptions.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsOptions = new HashMap<KeyCombo, Runnable>();
-		eventsOptions.put(new KeyCombo(1, new ArrayList<Integer>()), new Runnable() {
+		eventsOptions.put(new KeyCombo(1, new ArrayList<Character>()), new Runnable() {
 			@Override
 			public void run() {
 				// TODO options menu
@@ -101,7 +101,7 @@ public class StartMenu extends MenuLayout {
 		boundExpressionsQuit.put("w", "118 * scale");
 		boundExpressionsQuit.put("h", "32 * scale");
 		HashMap<KeyCombo, Runnable> eventsQuit = new HashMap<KeyCombo, Runnable>();
-		eventsQuit.put(new KeyCombo(1, new ArrayList<Integer>()), new Runnable() {
+		eventsQuit.put(new KeyCombo(1, new ArrayList<Character>()), new Runnable() {
 			@Override
 			public void run() {
 				parent.exit();

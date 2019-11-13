@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class KeyCombo {
 
 	private int mouseButton;
-	private ArrayList<Integer> keys;
+	private ArrayList<Character> keys;
 	
 	// Constructor
-	public KeyCombo(int mouseButton, ArrayList<Integer> keyValues) {
+	public KeyCombo(int mouseButton, ArrayList<Character> pressedKeys) {
 		this.mouseButton = mouseButton;
-		this.keys = keyValues;
+		this.keys = pressedKeys;
 	}
 	
 	// Access methods
@@ -18,7 +18,7 @@ public class KeyCombo {
 		return mouseButton;
 	}
 	
-	public ArrayList<Integer> getKeys() {
+	public ArrayList<Character> getKeys() {
 		return keys;
 	}
 	
