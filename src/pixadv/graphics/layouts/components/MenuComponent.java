@@ -5,6 +5,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import lib.expr.ExpUtil;
@@ -61,7 +63,9 @@ public class MenuComponent {
 					(int) (selfScreenBounds.y + (selfScreenBounds.height + fontMetrics.getAscent() * 0.7) / 2.0));
 		}
 		// Paint children components
-		for (String childName : children.keySet()) {
+		ArrayList<String> childrenNames = new ArrayList<String> (children.keySet());
+		Collections.sort(childrenNames);
+		for (String childName : childrenNames) {
 			children.get(childName).paint(g, registry, variables);
 		}
 	}

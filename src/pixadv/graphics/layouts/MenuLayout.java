@@ -2,6 +2,8 @@ package pixadv.graphics.layouts;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import pixadv.graphics.layouts.components.MenuComponent;
@@ -23,7 +25,9 @@ public class MenuLayout {
 	// Paint method
 	public void paint(Graphics g, Registry registry) {
 		HashMap<String, Double> bounds = getBounds(g.getClipBounds());
-		for (String childName : children.keySet())
+		ArrayList<String> childrenNames = new ArrayList<String> (children.keySet());
+		Collections.sort(childrenNames);
+		for (String childName : childrenNames)
 			children.get(childName).paint(g, registry, bounds);
 	}
 	
