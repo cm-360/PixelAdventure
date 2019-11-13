@@ -1,6 +1,7 @@
 package pixadv.graphics.layouts.components;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -14,6 +15,9 @@ public class MenuComponent {
 	
 	protected HashMap<String, String> boundExpressions;
 	protected String currentTexture = "";
+	
+	protected String textContent = "";
+	protected Font textFont;
 	
 	protected HashMap<KeyCombo, Runnable> interactEvents;
 	protected boolean focusable = false;
@@ -43,10 +47,17 @@ public class MenuComponent {
 		// Paint self texture
 		Rectangle selfScreenBounds = makeScreenCoords(g.getClipBounds(), selfBounds);
 		if (!currentTexture.isEmpty()) {
-			g.drawImage(registry.getTexture(currentTexture), selfScreenBounds.x, selfScreenBounds.y, selfScreenBounds.width, selfScreenBounds.height, null);
-			// For debugging
-			g.setFont(new Font(null, 0, 12));
-			g.drawString(currentTexture, selfScreenBounds.x + 3, selfScreenBounds.y + 13);
+			g.drawImage(registry.getTexture(currentTexture),
+					selfScreenBounds.x, selfScreenBounds.y,
+					selfScreenBounds.width, selfScreenBounds.height, null);
+		}
+		// Paint text
+		if (!textContent.isEmpty()) {
+			g.setFont(textFont);
+			FontMetrics fontMetrics = g.getFontMetrics();
+			g.drawString(textContent,
+					(int) (selfScreenBounds.x + (selfScreenBounds.width - fontMetrics.stringWidth(textContent)) / 2.0),
+					(int) (selfScreenBounds.y + (selfScreenBounds.height + fontMetrics.getAscent() * 0.7) / 2.0));
 		}
 		// Paint children components
 		for (String childName : children.keySet()) {
@@ -56,6 +67,11 @@ public class MenuComponent {
 	
 	public void setTexture(String textureID) {
 		currentTexture = textureID;
+	}
+	
+	public void setText(String text, Font font) {
+		textContent = text;
+		textFont = font;
 	}
 	
 	// Focus methods

@@ -1,5 +1,6 @@
 package modules.pixadv.layouts.menus;
 
+import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,9 @@ public class StartMenu extends MenuLayout {
 	
 	public StartMenu(GamePanel parent) {
 		super();
+		//
+		Font menuFont = new Font("SansSerif", 0, 36);
+		
 		// Logo
 		HashMap<String, String> boundExpressionsLogo = new HashMap<String, String>();
 		boundExpressionsLogo.put("x", "(pw / 2) - (155 * scale)");
@@ -42,6 +46,7 @@ public class StartMenu extends MenuLayout {
 			}
 		});
 		MenuComponent buttonSingleplayer = new MenuComponent(boundExpressionsSingleplayer, eventsSingleplayer, true);
+		buttonSingleplayer.setText("Singleplayer", menuFont);
 		buttonSingleplayer.setTexture("pixadv/gui/start-menu/singleplayer");
 		children.put("buttonSingleplayer", buttonSingleplayer);
 		// Multiplayer button
@@ -61,6 +66,7 @@ public class StartMenu extends MenuLayout {
 			}
 		});
 		MenuComponent buttonMultiplayer = new MenuComponent(boundExpressionsMultiplayer, eventsMultiplayer, true);
+		buttonMultiplayer.setText("Multiplayer", menuFont);
 		buttonMultiplayer.setTexture("pixadv/gui/start-menu/multiplayer");
 		children.put("buttonMultiplayer", buttonMultiplayer);
 		// Options button
@@ -77,6 +83,7 @@ public class StartMenu extends MenuLayout {
 			}
 		});
 		MenuComponent buttonOptions = new MenuComponent(boundExpressionsOptions, eventsOptions, true);
+		buttonOptions.setText("Options", menuFont);
 		buttonOptions.setTexture("pixadv/gui/start-menu/options");
 		children.put("buttonOptions", buttonOptions);
 		// Quit button
@@ -94,6 +101,7 @@ public class StartMenu extends MenuLayout {
 			}
 		});
 		MenuComponent buttonQuit = new MenuComponent(boundExpressionsQuit, eventsQuit, true);
+		buttonQuit.setText("Quit Game", menuFont);
 		buttonQuit.setTexture("pixadv/gui/start-menu/quit");
 		children.put("buttonQuit", buttonQuit);
 	}
