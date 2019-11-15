@@ -80,18 +80,6 @@ private final Registry REG;
 				y = Double.parseDouble(dataMap.getOrDefault("y", "0"));
 				xVel = Double.parseDouble(dataMap.getOrDefault("xVel", "0"));
 				yVel = Double.parseDouble(dataMap.getOrDefault("yVel", "0"));
-				illegalPhysics = true;
-				return "moved";
-			} else if (name.equals("physics")) {
-				if (illegalPhysics) {
-					illegalPhysics = false;
-					return "skipping";
-				} else {
-					x = Double.parseDouble(dataMap.getOrDefault("x", "0"));
-					y = Double.parseDouble(dataMap.getOrDefault("y", "0"));
-					xVel = Double.parseDouble(dataMap.getOrDefault("xVel", "0"));
-					yVel = Double.parseDouble(dataMap.getOrDefault("yVel", "0"));
-				}
 			}
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();

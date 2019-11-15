@@ -27,46 +27,54 @@ public class Newton {
 	// Main physics method
 	@SuppressWarnings("unchecked")
 	public void recalculate() {
-		long current = System.nanoTime();
+		long current = System.currentTimeMillis();
 		// 2-second delay for debugging
-		if (current - start < 2e9)
+		if (current - start < 2000)
 			return;
 		// Return if this is the first run
 		if (lastRun != -1) {
 			long increase = current - lastRun;
+			if (increase < 5)
+				return;
 			World world = UNIVERSE.currentWorld();
 			double gravity = 20;
 			//double friction = 1.0; // Placeholder, will use friction values from individual tiles later
 			// Calculate entity movement
 			for (EntityObject entity : world.getEntities()) {
-				
+				// Manual velocity changes
 				if (manualChanges.containsKey(entity)) {
-					entity.dataReceived(null, "physics", manualChanges.get(entity));
+					entity.dataReceived(null, "movement", manualChanges.get(entity));
 					manualChanges.remove(entity);
-				} else {
-					HashMap<String, String> data = new Gson().fromJson(entity.getData(), HashMap.class);
-					// Entity position and velocity
-					double x = Double.parseDouble(data.getOrDefault("x", "0"));
-					double y = Double.parseDouble(data.getOrDefault("y", "0"));
-					double xVel = Double.parseDouble(data.getOrDefault("xVel", "0"));
-					double yVel = Double.parseDouble(data.getOrDefault("yVel", "0"));
-					// Entity boundaries for collisions
-					double rWidth = Double.parseDouble(data.getOrDefault("width", "1")) / 2;
-					double rHeight = Double.parseDouble(data.getOrDefault("height", "1")) / 2;
-					double tolerance = 0.01;
-					int xMinCol = (int) Math.round(x - rWidth + tolerance), xMaxCol = (int) Math.round(x + rWidth - tolerance);
-					int yMinCol = (int) Math.round(y - rHeight + tolerance), yMaxCol = (int) Math.round(y + rHeight - tolerance);
-					for (int xCol = xMinCol; xCol < xMaxCol; xCol++)
-						for (int yCol = yMinCol; yCol < yMinCol; yCol++) {
-							TileObject tile = world.getTile(xCol, yCol, 1);
-							if (!tile.getID().equals("air")) {
-								
-							}
-						}
-					// Change entity position
-					x += 2 * (xVel * (increase / 1.0e9));
-					y += 2 * (yVel * (increase / 1.0e9));
 				}
+				// Physics changes
+				HashMap<String, String> data = new Gson().fromJson(entity.getData(), HashMap.class);
+				// Entity position and velocity
+				double x = Double.parseDouble(data.getOrDefault("x", "0"));
+				double y = Double.parseDouble(data.getOrDefault("y", "0"));
+				double xVel = Double.parseDouble(data.getOrDefault("xVel", "0"));
+				double yVel = Double.parseDouble(data.getOrDefault("yVel", "0"));
+				// Entity boundaries for collisions
+				double rWidth = Double.parseDouble(data.getOrDefault("width", "1")) / 2;
+				double rHeight = Double.parseDouble(data.getOrDefault("height", "1")) / 2;
+				double tolerance = 0.01;
+				int xMinCol = (int) Math.round(x - rWidth + tolerance), xMaxCol = (int) Math.round(x + rWidth - tolerance);
+				int yMinCol = (int) Math.round(y - rHeight + tolerance), yMaxCol = (int) Math.round(y + rHeight - tolerance);
+				for (int xCol = xMinCol; xCol < xMaxCol; xCol++)
+					for (int yCol = yMinCol; yCol < yMinCol; yCol++) {
+						TileObject tile = world.getTile(xCol, yCol, 1);
+						if (!tile.getID().equals("air")) {
+
+						}
+					}
+				// Change entity position
+				x += xVel * (increase / 1000.0);
+				y += yVel * (increase / 1000.0);
+				// Save new values to entity
+				data.put("x", Double.toString(x));
+				data.put("y", Double.toString(y));
+				data.put("xVel", Double.toString(xVel));
+				data.put("yVel", Double.toString(yVel));
+				entity.dataReceived(null, "movement", new Gson().toJson(data));
 			}
 		}
 		lastRun = current;

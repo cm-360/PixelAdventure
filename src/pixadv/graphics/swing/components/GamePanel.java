@@ -41,6 +41,8 @@ import pixadv.world.types.tiles.TileObject;
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	// Needed for access in event methods
+	private GamePanel self = this;
 	
 	private long lastRun = -1;
 	private int frames = 0;
@@ -83,8 +85,8 @@ public class GamePanel extends JPanel {
 							data.put("xVel", "-5");
 						if (pressedKeys.contains('d'))
 							data.put("xVel", "5");
-						//loadedUniverse.getPhysics().manualChange(player, new Gson().toJson(data));
-						player.dataReceived(null, "movement", new Gson().toJson(data));
+						loadedUniverse.getPhysics().manualChange(player, new Gson().toJson(data));
+						//player.dataReceived(null, "movement", new Gson().toJson(data));
 						// Process other keyboard input
 						
 					} catch (NullPointerException e) {
@@ -202,8 +204,12 @@ public class GamePanel extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				char key = arg0.getKeyChar();
-				if (!pressedKeys.contains(key))
+				if (key == KeyEvent.VK_ESCAPE) {
+					exit();
+					currentMenu = new StartMenu(self);
+				} else if (!pressedKeys.contains(key)) {
 					pressedKeys.add(key);
+				}
 			}
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -281,6 +287,7 @@ public class GamePanel extends JPanel {
 				((NetworkUniverse) loadedUniverse).disconnect();
 			else
 				((LocalUniverse) loadedUniverse).saveAll();
+			loadedUniverse = null;
 		} catch (NullPointerException e) {
 			// Do nothing
 		}
